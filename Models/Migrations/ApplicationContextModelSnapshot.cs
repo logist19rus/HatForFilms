@@ -33,9 +33,12 @@ namespace Models.Migrations
                     b.Property<int?>("OwnerId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Films");
                 });
@@ -61,8 +64,6 @@ namespace Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("adderId");
-
                     b.HasIndex("filmId");
 
                     b.HasIndex("hatId");
@@ -84,11 +85,12 @@ namespace Models.Migrations
                     b.Property<int?>("MemberId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("MemberId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Hats");
                 });
@@ -147,47 +149,29 @@ namespace Models.Migrations
 
             modelBuilder.Entity("Models.Classes.Film", b =>
                 {
-                    b.HasOne("Models.Classes.User", "Owner")
+                    b.HasOne("Models.Classes.User", null)
                         .WithMany("AddedFilms")
-                        .HasForeignKey("OwnerId");
-
-                    b.Navigation("Owner");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Models.Classes.FilmInHat", b =>
                 {
-                    b.HasOne("Models.Classes.User", "Adder")
-                        .WithMany("InHatFilms")
-                        .HasForeignKey("adderId");
-
                     b.HasOne("Models.Classes.Film", "Film")
                         .WithMany("FilmToHatRelationship")
                         .HasForeignKey("filmId");
 
-                    b.HasOne("Models.Classes.Hat", "Hat")
+                    b.HasOne("Models.Classes.Hat", null)
                         .WithMany("Films")
                         .HasForeignKey("hatId");
 
-                    b.Navigation("Adder");
-
                     b.Navigation("Film");
-
-                    b.Navigation("Hat");
                 });
 
             modelBuilder.Entity("Models.Classes.Hat", b =>
                 {
-                    b.HasOne("Models.Classes.User", "Creator")
+                    b.HasOne("Models.Classes.User", null)
                         .WithMany("Hats")
-                        .HasForeignKey("CreatorId");
-
-                    b.HasOne("Models.Classes.User", "Member")
-                        .WithMany("MemberedHats")
-                        .HasForeignKey("MemberId");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Member");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Models.Classes.Token", b =>
@@ -214,10 +198,6 @@ namespace Models.Migrations
                     b.Navigation("AddedFilms");
 
                     b.Navigation("Hats");
-
-                    b.Navigation("InHatFilms");
-
-                    b.Navigation("MemberedHats");
 
                     b.Navigation("token");
                 });

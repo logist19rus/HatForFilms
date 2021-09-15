@@ -34,7 +34,6 @@ namespace HatForFilms.Controllers
             var res = HatRepository.GetByUserId(Id).FirstOrDefault(x => x.Id == hatId);
             foreach(var r in res.Films)
             {
-                r.Hat = null;
                 r.Film = films.FirstOrDefault(x => x.Id == r.filmId);
             }
             return res;
@@ -59,10 +58,6 @@ namespace HatForFilms.Controllers
                     Id = x.Id,
                     Films = x.Films
                 };
-                foreach(var n in asd.Films)
-                {
-                    n.Hat = null;
-                }
                 resp.Add(asd);
             }
 

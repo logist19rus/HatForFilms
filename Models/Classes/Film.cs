@@ -8,7 +8,6 @@ namespace Models.Classes
         public string Name { get; set; }
         public int? OwnerId { get; set; }
 
-        public virtual User Owner { get; set; }
         public virtual List<FilmInHat> FilmToHatRelationship { get; set; }
     }
 }

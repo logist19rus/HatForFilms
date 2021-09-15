@@ -16,21 +16,6 @@ namespace Models.Data
             builder.Property(x => x.hatId).HasColumnName("HatId");
             builder.Property(x => x.filmId).HasColumnName("FilmId");
             builder.Property(x => x.adderId).HasColumnName("AdderId");
-
-            builder.HasOne(x => x.Adder)
-                .WithMany(x => x.InHatFilms)
-                .HasForeignKey(x => x.adderId)
-                .HasPrincipalKey(x => x.Id);
-
-            builder.HasOne(x => x.Film)
-                .WithMany(x => x.FilmToHatRelationship)
-                .HasForeignKey(x => x.filmId)
-                .HasPrincipalKey(x => x.Id);
-
-            builder.HasOne(x => x.Hat)
-                .WithMany(x => x.Films)
-                .HasForeignKey(x => x.hatId)
-                .HasPrincipalKey(x => x.Id);
         }
     }
 }

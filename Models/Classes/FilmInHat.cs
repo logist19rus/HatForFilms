@@ -13,7 +13,5 @@ namespace Models.Classes
         public int? hatId { get; set; }
 
         public virtual Film Film { get; set; }
-        public virtual User Adder { get; set; }
-        public virtual Hat Hat { get; set; }
     }
 }

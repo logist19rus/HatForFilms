@@ -16,11 +16,6 @@ namespace Models.Data
                 .WithOne(x => x.Film)
                 .HasForeignKey(x => x.filmId)
                 .HasPrincipalKey(x => x.Id);
-
-            builder.HasOne(x => x.Owner)
-                .WithMany(x => x.AddedFilms)
-                .HasForeignKey(x => x.OwnerId)
-                .HasPrincipalKey(x => x.Id);
         }
     }
 }

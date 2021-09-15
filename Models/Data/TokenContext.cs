@@ -16,11 +16,6 @@ namespace Models.Data
             builder.Property(x => x.token).HasColumnName("Token");
             builder.Property(x => x.LastActivity).HasColumnName("LastActivity");
             builder.Property(x => x.UserId).HasColumnName("UserId");
-
-            builder.HasOne(x => x.User)
-                .WithOne(x => x.token)
-                .HasForeignKey<User>(x => x.TokenId)
-                .HasPrincipalKey<Token>(x => x.Id);
         }
     }
 }

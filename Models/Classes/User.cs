@@ -15,8 +15,6 @@ namespace Models.Classes
         public virtual Token token { get; set; }
         public virtual List<Hat> Hats { get; set; }
         public virtual List<Film> AddedFilms { get; set; }
-        public virtual List<FilmInHat> InHatFilms { get; set; }
-        public virtual List<Hat> MemberedHats { get; set; }
 
         public User() { }
 

@@ -12,7 +12,5 @@ namespace Models.Classes
         public int? MemberId { get; set; }
 
         public virtual List<FilmInHat> Films { get; set; }
-        public virtual User Creator { get; set; }
-        public virtual User Member { get; set; }
     }
 }
