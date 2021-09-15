@@ -1,24 +1,10 @@
-﻿import { CheckAccountCookies } from './../cookies/accountCookies'
+﻿import { parseJSON } from 'jquery';
+import { CheckAccountCookies } from './../cookies/accountCookies'
 
 export class mainRepository {
     constructor() {
         this.request = this.request;
     }
-    //authorizedRequest(link = '/', headParams = null) {
-    //    if (headParams != null && Array.isArray(headParams)) {
-    //        link += "?";
-    //        let count = 0;
-    //        for (let i in headParams) {
-    //            if (headParams[i].name != null && headParams[i].val != null) {
-    //                if (count > 0) {
-    //                    link += "&";
-    //                }
-    //                link += headParams[i].name + "=" + headParams[i].val;
-    //                count++;
-    //            }
-    //        }
-    //    }
-    //}
 
     async request(link, isGet = true, headParams = null, isAuthorized = false) {
         let url = '' + link;
@@ -52,7 +38,7 @@ export class mainRepository {
                 headers: header,
                 method: met
             });
-        let res = await response.json();
-        return res;
+        let res = await response.text();
+        return res == "" ? {} : parseJSON(res);
     }
 }

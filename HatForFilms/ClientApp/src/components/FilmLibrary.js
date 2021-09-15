@@ -11,13 +11,17 @@ export function Library() {
     const [newFilmName, setNewFilmName] = useState('');
     const [films, setFilms] = useState([]);
 
-    useEffect(() => {
+    function refreshFilms() {
         filmRep.getAll().then(function (res) {
             let filmsMap = res.map(function (f, id) {
                 return (<li key={id}>{f.name}</li>)
             })
             setFilms(x => x = filmsMap);
         })
+    }
+
+    useEffect(() => {
+        refreshFilms();
     }, []);
 
     function onCreateInputChange(e) {
@@ -36,13 +40,12 @@ export function Library() {
     }
 
     function CreateNewFilm() {
-        filmRep.createNew(newFilmName);
-        window.location.reload();
+        filmRep.createNew(newFilmName).then(() => { refreshFilms(); });
+        setNewFilmName(x => x = '');
     }
 
     function changeVisabilityVreator() {
         setVisability(x => x = !x);
-        console.log(visibleCreator);
     }
 
     return (

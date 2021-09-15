@@ -7,34 +7,28 @@ export function Hats() {
 
     let hatRep = new HatRepository();
 
-    useEffect(() => {
+    function refreshHatList() {
         hatRep.getMy().then(function (r) {
-            console.log('start read');
-            console.log(r);
             let hatsMap = r.map(function (item, idx) {
                 return (<NavLink className="hatLink" to={`/Hats/${item.id}`} key={idx}>{item.id}</NavLink>)
             });
             setHats(x => x = hatsMap);
         });
+    }
 
-        const hatsCreateBtn = document.getElementById("creator");
-        hatsCreateBtn.addEventListener('click', createNewHat);
-
-        return () => {
-            hatsCreateBtn.removeEventListener('click', createNewHat);
-        }
-
+    useEffect(() => {
+        refreshHatList();   
     }, []);
+    
 
     function createNewHat() {
-        hatRep.createHatForMe();
-        window.location.reload();
+        hatRep.createHatForMe().then(() => { refreshHatList(); });
     }
 
     return (
         <div id='workpls' className="hats">
             {myHats}
-            <input id="creator" type='button' value='create new' />
+            <input id="creator" type='button' value='create new' onClick={createNewHat} />
         </div>
     );
 }

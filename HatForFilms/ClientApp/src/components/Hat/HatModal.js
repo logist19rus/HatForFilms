@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { HatRepository } from '../../Repository/HatRepository'
 import { FilmRepository } from '../../Repository/FilmRepository'
-import { CheckAccountCookies} from './.././.././cookies/accountCookies'
+import { CheckAccountCookies } from './.././.././cookies/accountCookies'
 
 export function OneHat(props) {
     let prodId = props.match.params.id;
@@ -16,7 +16,7 @@ export function OneHat(props) {
     const [isOwner, setIsOwner] = useState(false);
     const [member, setMember] = useState(-1);
 
-    useEffect(() => {
+    function refreshHat() {
         hatRep.getSingle(prodId).then(function (res) {
             if (res != null) {
                 setHat(x => x = res);
@@ -24,15 +24,14 @@ export function OneHat(props) {
                     return (<li key={id}>{f.film.name}</li>)
                 });
                 setFilms(x => x = filmMap);
-                console.log(hat);
-                console.log(accId);
                 setIsOwner(x => x = (res.creatorId == accId ? true : false));
                 setMember(x => x = res.memberId);
             }
         });
-
-        return;
-    }, []);
+    }
+    useEffect(() => {
+        refreshHat();
+    });
 
     function onSearchChange(e) {
         let target = e.target;
@@ -49,9 +48,8 @@ export function OneHat(props) {
         let hatId = prodId;
         let filmId = id;
         let msg = "Добавить в шляпу " + hatId + " фильм " + filmId + "?";
-        hatRep.addNewFilm(hatId, filmId);
+        hatRep.addNewFilm(hatId, filmId).then(() => { refreshHat(); });
         console.log('add' + id);
-        window.location.reload();
     }
 
     function searchFilm() {
@@ -76,8 +74,7 @@ export function OneHat(props) {
     }
 
     function changeMember() {
-        hatRep.changeMember(hat.id, member);
-        window.location.reload();
+        hatRep.changeMember(hat.id, member).then(() => { refreshHat();});
     }
 
     return (<div>
