@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Helper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Classes;
 using Models.Classes.Response;
@@ -28,7 +29,7 @@ namespace HatForFilms.Controllers
         [HttpPost]
         public StatusCodeResult Register([FromHeader] string login, [FromHeader] string pass)
         {
-            var res = Users.Register(login, pass);
+            var res = Users.Register(login, pass, tokenGenerator.getToken());
 
             if (res)
             {

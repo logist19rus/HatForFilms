@@ -4,7 +4,6 @@ const TokenCookieName = "mtkn";
 const UserIDCookieName = "uid";
 
 export function CheckAccountCookies(token, userId) {
-    //document.cookie = "mtkn=" + token + ";uid=" + userId;
     let authInfo = {
         token: GetCookie(TokenCookieName),
         id: GetCookie(UserIDCookieName)

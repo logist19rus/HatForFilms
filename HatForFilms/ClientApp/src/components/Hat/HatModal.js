@@ -1,16 +1,20 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { HatRepository } from '../../Repository/HatRepository'
 import { FilmRepository } from '../../Repository/FilmRepository'
+import { CheckAccountCookies} from './.././.././cookies/accountCookies'
 
 export function OneHat(props) {
     let prodId = props.match.params.id;
     let hatRep = new HatRepository();
     let filmRep = new FilmRepository();
+    let accId = CheckAccountCookies().id;
 
     const [hat, setHat] = useState({});
     const [searchStr, setSearchStr] = useState("");
     const [filmsToAdd, setFilmsToAdd] = useState([]);
     const [films, setFilms] = useState([]);
+    const [isOwner, setIsOwner] = useState(false);
+    const [member, setMember] = useState(-1);
 
     useEffect(() => {
         hatRep.getSingle(prodId).then(function (res) {
@@ -21,9 +25,14 @@ export function OneHat(props) {
                 });
                 setFilms(x => x = filmMap);
                 console.log(hat);
+                console.log(accId);
+                setIsOwner(x => x = (res.creatorId == accId ? true : false));
+                setMember(x => x = res.memberId);
             }
         });
-    });
+
+        return;
+    }, []);
 
     function onSearchChange(e) {
         let target = e.target;
@@ -42,6 +51,7 @@ export function OneHat(props) {
         let msg = "Добавить в шляпу " + hatId + " фильм " + filmId + "?";
         hatRep.addNewFilm(hatId, filmId);
         console.log('add' + id);
+        window.location.reload();
     }
 
     function searchFilm() {
@@ -54,10 +64,35 @@ export function OneHat(props) {
         });
     }
 
+    function onMemberChange(e) {
+        let target = e.target;
+        let val = '';
+        if (target == null) {
+            return;
+        }
+        val = target.value;
+
+        setMember(x => x = val);
+    }
+
+    function changeMember() {
+        hatRep.changeMember(hat.id, member);
+        window.location.reload();
+    }
+
     return (<div>
         <div>
             hat id - {hat.id}
         </div>
+        {isOwner ?
+            (<div className="isOwnerMenu">
+                <p>Назначить второго участника для данной шляпы</p>
+                <input type="text" onChange={onMemberChange} value={member} />
+                <input type="button" value="Переназначить" onClick={changeMember} />
+            </div>) :
+            (<div className="isMemberMenu">
+                Вы не можете назначать второго участника т.к. не являетесь создателем
+            </div>)}
         <p>Ваши фильмы в шляпе</p>
         <ul className="filmsInHat">
             {films}

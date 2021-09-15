@@ -38,5 +38,24 @@ namespace Models.Repositories
                 return false;
             }
         }
+
+        public bool ChangeHatMember(int hatId, int memberId)
+        {
+            try
+            {
+                using (var db = new ApplicationContext())
+                {
+                    var hat = db.Hats.FirstOrDefault(x=>x.Id == hatId);
+                    hat.MemberId = memberId;
+                    db.Hats.Update(hat);
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

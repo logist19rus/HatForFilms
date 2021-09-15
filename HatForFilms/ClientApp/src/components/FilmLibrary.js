@@ -18,7 +18,7 @@ export function Library() {
             })
             setFilms(x => x = filmsMap);
         })
-    });
+    }, []);
 
     function onCreateInputChange(e) {
         let target = e.target;

@@ -21,7 +21,7 @@ namespace Models.Repositories
             }
         }
 
-        public bool Register(string login, string pass)
+        public bool Register(string login, string pass, string token)
         {
             var newUser = new User()
             {
@@ -30,7 +30,7 @@ namespace Models.Repositories
                 token = new Token
                 {
                     LastActivity= DateTime.Now,
-                    token = "asddsa"
+                    token = token
                 }
             };
             try

@@ -93,5 +93,25 @@ namespace HatForFilms.Controllers
             }
             
         }
+
+        [HttpPost]
+        [Route("MemberSet")]
+        public ActionResult SetMember([FromHeader] int Id, [FromHeader] string token,
+            [FromQuery]int hatId, [FromQuery]int memberId)
+        {
+            if (!IdentifyUser.isValid(Id, token))
+            {
+                return BadRequest();
+            }
+
+            if (HatRepository.ChangeHatMember(hatId, memberId))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
     }
 }

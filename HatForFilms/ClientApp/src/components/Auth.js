@@ -35,6 +35,7 @@ export function Authorize(props) {
 
     function reg() {
         console.log('reg');
+        accRep.Register(login, pass);
     }
 
     function auth() {

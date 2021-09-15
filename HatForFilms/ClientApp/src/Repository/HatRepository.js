@@ -21,4 +21,11 @@ export class HatRepository extends mainRepository {
         param.push({ name: "filmId", val: filmId });
         return await this.request('/api/FiH/addNew', false, param, true);
     }
+
+    async changeMember(hatId, memberId) {
+        let param = [];
+        param.push({ name: "hatId", val: hatId });
+        param.push({ name: "memberId", val: memberId });
+        return await this.request('/api/Hats/MemberSet', false, param, true);
+    }
 }
