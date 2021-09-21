@@ -6,17 +6,15 @@ export class mainRepository {
         this.request = this.request;
     }
 
-    async request(link, isGet = true, headParams = null, isAuthorized = false) {
+    async request(link, isGet = true, headParams = null, isAuthorized = false, body = null) {
         let url = '' + link;
-        let header = {};
-        let met = 'GET';
-
-        if (!isGet) {
-            met = 'POST';
-        }
+        let header = {
+            'Content-Type': 'application/json;charset=utf-8'
+        };
 
         if (isAuthorized) {
-            header = CheckAccountCookies();
+            header.Id = CheckAccountCookies().id;
+            header.token = CheckAccountCookies().token;
         }
 
         if (headParams != null && Array.isArray(headParams)) {
@@ -32,12 +30,23 @@ export class mainRepository {
                 }
             }
         }
-
-        let response = await fetch(url,
-            {
-                headers: header,
-                method: met
-            });
+        let response;
+        if (isGet) {
+            response = await fetch(url,
+                {
+                    headers: header,
+                    method: 'GET'
+                });
+        }
+        else {
+            console.log(header);
+            response = await fetch(url,
+                {
+                    headers: header,
+                    method: 'POST',
+                    body: body != null ? JSON.stringify(body) : "{}"
+                });
+        }
         let res = await response.text();
         console.log(res == "" ? {} : parseJSON(res));
         return res == "" ? {} : parseJSON(res);

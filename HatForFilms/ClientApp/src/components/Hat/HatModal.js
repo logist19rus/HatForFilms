@@ -31,7 +31,7 @@ export function OneHat(props) {
     }
     useEffect(() => {
         refreshHat();
-    },[]);
+    }, []);
 
     function onSearchChange(e) {
         let target = e.target;
@@ -74,7 +74,7 @@ export function OneHat(props) {
     }
 
     function changeMember() {
-        hatRep.changeMember(hat.id, member).then(() => { refreshHat();});
+        hatRep.changeMember(hat.id, member).then(() => { refreshHat(); });
     }
 
     return (<div>

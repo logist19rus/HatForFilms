@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react'
 import { FilmRepository } from '../Repository/FilmRepository'
+import { FilmPage } from '../components/Film/FilmPage'
 
 export function Library() {
     let filmRep = new FilmRepository();
@@ -10,13 +11,31 @@ export function Library() {
     const [visibleCreator, setVisability] = useState(false);
     const [newFilmName, setNewFilmName] = useState('');
     const [films, setFilms] = useState([]);
+    const [filmModal, setFilmModal] = useState({});
 
     function refreshFilms() {
         filmRep.getAll().then(function (res) {
             let filmsMap = res.map(function (f, id) {
-                return (<li key={id}>{f.name}</li>)
+                return (<li key={id} onClick={() => { setFilmModal(x => x = f) }}>{f.name}</li>)
             })
             setFilms(x => x = filmsMap);
+        })
+    }
+
+    function refreshAfterUpdate(filmId) {
+        filmRep.getAll().then(function (res) {
+            let filmsMap = res.map(function (f, id) {
+                return (<li key={id} onClick={() => { setFilmModal(x => x = f) }}>{f.name}</li>)
+            })
+            setFilms(x => x = filmsMap);
+            for (var i in res) {
+                console.log(res[i]);
+                if (res[i].id == filmId) {
+                    console.log(res[i]);
+                    setFilmModal(x => x = res[i]);
+                    break;
+                }
+            }
         })
     }
 
@@ -50,6 +69,16 @@ export function Library() {
 
     return (
         <div>
+            {
+                Object.keys(filmModal) == 0 ? null :
+                    <FilmPage value={
+                        {
+                            film: filmModal,
+                            closeFunc: () => { setFilmModal(x => x = {}); },
+                            refreshFilms: refreshAfterUpdate
+                        }
+                    } />
+            }
             library
             <ul>
                 {films}

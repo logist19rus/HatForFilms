@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Classes;
+using Models.Classes.Request;
 using Models.Data;
 using Models.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace HatForFilms.Controllers
 {
@@ -60,6 +62,32 @@ namespace HatForFilms.Controllers
                 return BadRequest();
             }
             
+        }
+
+        [HttpPost]
+        [Route("Update")]
+        public ActionResult UpdateFilm([FromHeader] int Id, [FromHeader] string token, 
+            [FromBody] filmUpdateRequest film)
+        {
+            //if (string.IsNullOrEmpty(film))
+            //{
+            //    return BadRequest();
+            //}
+            if (!IdentifyUser.isValid(Id, token))
+            {
+                return BadRequest();
+            }
+
+            //var filmUpdate = JsonConvert.DeserializeObject<filmUpdateRequest>(film);
+
+            if (Films.Update(film))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }
