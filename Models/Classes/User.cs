@@ -11,6 +11,8 @@ namespace Models.Classes
         public string login { get; set; }
         public string password { get; set; }
         public int? TokenId { get; set; }
+        public string Name { get; set; }
+        public string PhotoSrc { get; set; }
 
         public virtual Token token { get; set; }
         public virtual List<Hat> Hats { get; set; }

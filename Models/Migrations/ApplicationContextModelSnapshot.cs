@@ -26,6 +26,18 @@ namespace Models.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CountOfSeries")
+                        .HasColumnType("int")
+                        .HasColumnName("CountOfSeries");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Description");
+
+                    b.Property<string>("LinkForWatch")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Link");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Name");
@@ -33,8 +45,16 @@ namespace Models.Migrations
                     b.Property<int?>("OwnerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PhotoSrc")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Photo");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("WatchedSeries")
+                        .HasColumnType("int")
+                        .HasColumnName("WatchedSeries");
 
                     b.HasKey("Id");
 
@@ -129,6 +149,14 @@ namespace Models.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Name");
+
+                    b.Property<string>("PhotoSrc")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("PhotoSrc");
 
                     b.Property<int?>("TokenId")
                         .HasColumnType("int")

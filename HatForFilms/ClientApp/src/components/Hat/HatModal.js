@@ -31,7 +31,7 @@ export function OneHat(props) {
     }
     useEffect(() => {
         refreshHat();
-    });
+    },[]);
 
     function onSearchChange(e) {
         let target = e.target;

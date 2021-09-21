@@ -13,6 +13,8 @@ namespace Models.Data
             builder.Property(x => x.TokenId).HasColumnName("TokenId");
             builder.Property(x => x.login).HasColumnName("Login");
             builder.Property(x => x.password).HasColumnName("Password");
+            builder.Property(x => x.Name).HasColumnName("Name");
+            builder.Property(x => x.PhotoSrc).HasColumnName("PhotoSrc");
 
             builder.HasOne(x => x.token)
                 .WithOne(x => x.User)

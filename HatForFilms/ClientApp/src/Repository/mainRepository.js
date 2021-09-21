@@ -39,6 +39,7 @@ export class mainRepository {
                 method: met
             });
         let res = await response.text();
+        console.log(res == "" ? {} : parseJSON(res));
         return res == "" ? {} : parseJSON(res);
     }
 }
