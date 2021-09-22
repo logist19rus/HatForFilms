@@ -1,27 +1,35 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { CheckAccountCookies } from './.././.././cookies/accountCookies'
 import { FilmRepository } from '../../Repository/FilmRepository'
+import '../Film/filmStyle.css'
 
 export function FilmPage(modalInfo) {
     let filmRep = new FilmRepository();
     const [filmName, setFilmName] = useState('');
     const [filmDescript, setFilmDescript] = useState('');
+    const [filmWatchLink, setWatchLink] = useState('');
+    const [filmImageLink, setImageLink] = useState('');
+    const [filmSeriesCount, setSeriesCount] = useState(0);
     const [isOwner, setIsOwner] = useState(false);
     const [changeStatus, setChangeStatus] = useState(false);
 
     const formIds = {
         name: 'filmName',
-        descr:'filmDescr'
+        descr: 'filmDescr',
+        link: 'watchLink',
+        series: 'countSeries',
+        image: 'imageLink'
     }
 
     let film = modalInfo.value.film;
     let closeFunc = modalInfo.value.closeFunc;
     let refreshFilms = modalInfo.value.refreshFilms;
 
+    console.log(film);
+
     useEffect(() => {
         let accId = CheckAccountCookies().id;
-        setFilmName(x => x = film.name);
-        setFilmDescript(x => x = film.description);
+        LoadDefaultValues();
         if (accId == film.ownerId) {
             console.log('isOwnre');
             setIsOwner(x => x = true);
@@ -29,9 +37,16 @@ export function FilmPage(modalInfo) {
     }, []);
 
     function BacktrackChanges() {
+        LoadDefaultValues();
+        setChangeStatus(x => x = false);
+    }
+
+    function LoadDefaultValues() {
         setFilmName(x => x = film.name);
         setFilmDescript(x => x = film.description);
-        setChangeStatus(x => x = false);
+        setWatchLink(x => x = film.linkForWatch);
+        setSeriesCount(x => x = film.countOfSeries);
+        setImageLink(x => x = film.photoSrc);
     }
 
     function SetFilmState(e) {
@@ -46,13 +61,30 @@ export function FilmPage(modalInfo) {
         else if (t.id == formIds.descr) {
             setFilmDescript(x => x = t.value);
         }
+        else if (t.id == formIds.link) {
+            setWatchLink(x => x = t.value);
+        }
+        else if (t.id == formIds.image) {
+            setImageLink(x => x = t.value);
+        }
+        else if (t.id == formIds.series) {
+            if (t.value > 0) {
+                setSeriesCount(x => x = t.value);
+            }
+            else {
+                setSeriesCount(x => x = 1);
+            }
+        }
     }
 
     function UpdateFilm() {
         let updatedFilm = {
             Id: film.id,
             Name: filmName,
-            Description: filmDescript
+            Description: filmDescript,
+            Link: filmWatchLink,
+            Count: parseInt(filmSeriesCount),
+            Image: filmImageLink
         };
         filmRep.updateFilm(updatedFilm).then((res) => {
             refreshFilms(film.id);
@@ -62,24 +94,45 @@ export function FilmPage(modalInfo) {
 
     return (
         <div className='filmModal'>
+            <div className='close' onClick={closeFunc}>close</div>
             {!changeStatus ?
                 (
-                    <div className='aboutFilm'>
-                        <h2 className='filmName'>{film.name}</h2>
-                        <div className='filmDescription'>{film.description}</div>
-                        {isOwner ? (< input type='button' value='Change' onClick={() => { setChangeStatus(x => x = true) }} />) : null}
+                    <div className='filmContent'>
+                        <div className='filmLeftSide'>
+                            <img src={film.photoSrc} width='700px' height='1000px' alt='avoid' />
+                            <a href={film.linkForWatch}>Смотреть</a>
+                        </div>
+                        <div className='filmRightSide'>
+                            <h2 className='filmName'>{film.name}</h2>
+                            <div className='filmDescription'>{film.description}</div>
+                            {film.countOfSeries > 1 ? (<p>Серий: {film.countOfSeries}</p>) : null}
+                        </div>
+                        <div className='filmBottomSide'>
+                            {isOwner ? (< input type='button' value='Изменить информацию о фильме' onClick={() => { setChangeStatus(x => x = true) }} />) : null}
+                        </div>
                     </div>
                 ) : (
-                    <form>
-                        <label>Название</label>
-                        <input id={formIds.name} type='text' value={filmName} onChange={SetFilmState} />
-                        <label>Описание</label>
-                        <input id={formIds.descr} type='text' value={filmDescript} onChange={SetFilmState} />
-                        <input className='filmBtn' type='button' value='Обновить' onClick={UpdateFilm}/>
-                        <input className='filmBtn' type='button' value='Отмена' onClick={BacktrackChanges } />
+                    <form className='filmContent filmForm'>
+                        <div className='filmInputs'>
+                            <label>Название</label>
+                            <input id={formIds.name} type='text' value={filmName} onChange={SetFilmState} />
+                            <label>Описание</label>
+                            <textarea id={formIds.descr} onChange={SetFilmState}>
+                                {filmDescript}
+                            </textarea>
+                            <label>Ссылка на постер</label>
+                            <input id={formIds.image} type='text' value={filmImageLink} onChange={SetFilmState} />
+                            <label>Ссылка на просмотр</label>
+                            <input id={formIds.link} type='text' value={filmWatchLink} onChange={SetFilmState} />
+                            <label>Количество серий</label>
+                            <input id={formIds.series} type='text' value={filmSeriesCount} onChange={SetFilmState} />
+                        </div>
+                        <div className='filmActionBlock'>
+                            <input className='filmBtn' type='button' value='Обновить' onClick={UpdateFilm} />
+                            <input className='filmBtn' type='button' value='Отмена' onClick={BacktrackChanges} />
+                        </div>
                     </form>
                 )}
-            <div onClick={closeFunc}>!!close</div>
         </div>
     )
 }

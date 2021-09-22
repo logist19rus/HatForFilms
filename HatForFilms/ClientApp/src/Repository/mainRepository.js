@@ -39,7 +39,7 @@ export class mainRepository {
                 });
         }
         else {
-            console.log(header);
+            console.log(JSON.stringify(body));
             response = await fetch(url,
                 {
                     headers: header,

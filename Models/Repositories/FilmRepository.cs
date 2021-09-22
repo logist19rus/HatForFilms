@@ -45,6 +45,9 @@ namespace Models.Repositories
                     var film = db.Films.FirstOrDefault(x=>x.Id == filmUpdate.Id);
                     film.Name = filmUpdate.Name;
                     film.Description = filmUpdate.Description;
+                    film.LinkForWatch = filmUpdate.Link;
+                    film.CountOfSeries = filmUpdate.Count;
+                    film.PhotoSrc = filmUpdate.Image;
                     db.Films.Update(film);
                     db.SaveChanges();
                 }
