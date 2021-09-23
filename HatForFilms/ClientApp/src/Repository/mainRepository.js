@@ -13,6 +13,7 @@ export class mainRepository {
         };
 
         if (isAuthorized) {
+            console.log(CheckAccountCookies());
             header.Id = CheckAccountCookies().id;
             header.token = CheckAccountCookies().token;
         }

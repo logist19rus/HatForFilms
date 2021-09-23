@@ -3,13 +3,13 @@
 const TokenCookieName = "mtkn";
 const UserIDCookieName = "uid";
 
-export function CheckAccountCookies(token, userId) {
+export function CheckAccountCookies(forReload) {
     let authInfo = {
         token: GetCookie(TokenCookieName),
         id: GetCookie(UserIDCookieName)
     }
 
-    if (authInfo.token == "" || authInfo.id == "") {
+    if ((authInfo.token == "" || authInfo.id == "") && forReload) {
         document.location = "/auth";
     }
 

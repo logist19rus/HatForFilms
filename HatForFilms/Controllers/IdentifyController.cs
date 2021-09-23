@@ -19,24 +19,57 @@ namespace HatForFilms.Controllers
 
         [Route("Authorize")]
         [HttpGet]
-        public AccountResponse Auth([FromQuery]string login, [FromQuery]string pass)
+        public ApiResult Auth([FromQuery]string login, [FromQuery]string pass)
         {
             var user = Users.Auth(login, pass);
-            return new AccountResponse { token = user.token?.token, id = user.Id };
+            if (user != null)
+            {
+                var creds = new AccountResponse()
+                {
+                    token = user.token.token,
+                    id = user.Id
+                };
+                return ApiResultCreator.CreateOkResponse(creds);
+            }
+            else
+            {
+                return ApiResultCreator.CreateErrorResponse("Error");
+            }
         }
 
         [Route("Reg")]
         [HttpPost]
-        public StatusCodeResult Register([FromHeader] string login, [FromHeader] string pass)
+        public ApiResult Register([FromHeader] string login, [FromHeader] string pass)
         {
             var res = Users.Register(login, pass, tokenGenerator.getToken());
 
             if (res)
             {
-                return Ok();
+                return ApiResultCreator.CreateOkResponse(res);
             }
 
-            return BadRequest();
+            return ApiResultCreator.CreateErrorResponse("Error");
+        }
+
+        [Route("GetMe")]
+        [HttpGet]
+        public ApiResult GetMe([FromHeader] int Id, [FromHeader] string token)
+        {
+            if (!IdentifyUser.isValid(Id, token))
+            {
+                return ApiResultCreator.CreateErrorResponse("Неверный токен");
+            }
+
+            var user = Users.GetById(Id);
+
+            if(user == null)
+            {
+                return ApiResultCreator.CreateErrorResponse("Пользователь не найден");
+            }
+
+            user.password = "";
+
+            return ApiResultCreator.CreateOkResponse(user);
         }
     }
 }

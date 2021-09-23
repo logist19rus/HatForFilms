@@ -1,0 +1,67 @@
+﻿.header-signin-type {
+    display: flex;
+    background: aqua;
+}
+
+    .header-signin-type div {
+        width: 200px;
+        padding-left: 10px;
+        cursor: pointer;
+    }
+
+        .header-signin-type div:hover {
+            font-weight: 600;
+        }
+
+.heder-signin-selected {
+    background: rgb(4 181 248);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-input{
+    width: 400px;
+    margin-top: 8px;
+}
+
+.auth-btn {
+    width: 250px;
+    margin-top: 8px;
+}
+
+.user-form-row {
+    display: flex;
+    height: 40px;
+    font-size: 16px;
+    background: rgb(228 220 220);
+    border-bottom: 1px solid black;
+}
+
+.user-form-name {
+    display: flex;
+    align-items: center;
+    width: 30%;
+    background: rgb(126 245 205);
+    padding-left: 4px;
+}
+
+.user-form-val {
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
+}
+
+.user-form-footer{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.exit-btn{
+    width: 120px;
+    height: 30px;
+    background: rgb(247 145 145);
+}

@@ -52,5 +52,14 @@ namespace Models.Repositories
                 return false;
             }
         }
+
+        public User GetById(int id)
+        {
+            using (var db = new ApplicationContext())
+            {
+                var User = db.Users.FirstOrDefault(x => x.Id == id);
+                return User;
+            }
+        }
     }
 }

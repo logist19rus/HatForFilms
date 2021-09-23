@@ -18,8 +18,7 @@ namespace Models.Data
 
             builder.HasOne(x => x.token)
                 .WithOne(x => x.User)
-                .HasForeignKey<Token>(x=>x.UserId)
-                .HasPrincipalKey<User>(x=>x.Id);
+                .HasForeignKey<Token>(x => x.UserId);
         }
     }
 }
